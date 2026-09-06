@@ -19,7 +19,7 @@ Before invoking any tool, if the input is already a direct URL: do one cheap fet
 
 - Status 403/429, or a CAPTCHA/"access denied" marker in the small body → treat as blocked, go to Step 1.
 - Status 200 and body is empty or near-empty (no redirect, no JS-shell markers you can't tell apart from real emptiness) → the page most likely has no content, not a block. Report that and stop — don't burn the full chain on a wall that isn't there. Only continue into the chain if the user says the content should exist (e.g., known JS-rendered page).
-- Anything else → proceed normally; the chain still applies if the fetched content turns out insufficient or irrelevant.
+- Anything else → go to Step 1; the chain still applies if the fetched content turns out insufficient or irrelevant.
 
 Skip this step for keyword/topic searches with no single URL to probe.
 

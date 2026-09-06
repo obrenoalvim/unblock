@@ -26,7 +26,13 @@ Use sempre que uma busca, scrape ou crawl falhar, ou de cara quando bloqueio par
 12. **news-extractor**: extração ajustada pra notícia e artigo em 12 sites
 13. **Scrapling** (lib Python, último recurso): escreve e roda um script curto de stealth-fetch
 
-Toda ferramenta da lista é grátis. Sem API key, sem tier pago, sem cadastro. Bloqueio ou resultado vazio manda pra próxima ferramenta; nunca repete a mesma duas vezes. No fim da corrente, reporta qual ferramenta funcionou, ou que as 13 falharam.
+Toda ferramenta da lista é grátis. Sem API key, sem tier pago, sem cadastro. Bloqueio ou resultado vazio manda pra próxima ferramenta; nunca repete a mesma duas vezes.
+
+**Precisa das 13 instaladas pra cobertura completa.** Ferramenta não instalada é pulada, não conta como falha — o relatório final sempre separa "tentadas" (instaladas, rodadas de fato) de "puladas" (não instaladas), pra uma máquina com 3 das 13 não parecer "13 ferramentas falharam".
+
+Algumas ferramentas pedem configuração além de instalar. **agent-reach** é zero-config pra 6 canais mas precisa de cookie/token pra outros (Twitter/X, 小红书) — roda `agent-reach doctor --json` pra checar. Lê a documentação de cada ferramenta antes de assumir que uma falha é bloqueio de verdade.
+
+Antes de gastar a corrente toda, uma checagem barata de status HTTP + tamanho do body numa URL direta distingue "bloqueado" de "página genuinamente vazia" — não faz sentido rodar 13 ferramentas contra uma página sem conteúdo nenhum. A corrente também guarda qual ferramenta ganhou pra cada domínio (um placar local pequeno) e tenta essa primeiro da próxima vez, antes de cair pra ordem fixa abaixo.
 
 **Fora de propósito:** qualquer coisa que precise de API key, tier pago ou conta (firecrawl-scrape, ferramentas x402, skills de proxy pago). Essa corrente fica grátis.
 
@@ -59,3 +65,5 @@ Copie `skills/web/SKILL.md` pro diretório de skills do seu sistema e invoque pe
 ## Funciona com
 
 Qualquer sessão Claude Code. Cada ferramenta da corrente (agent-reach, crawler, Scrapling e o resto) precisa da própria instalação pro passo dela rodar. Ferramenta não instalada é pulada, e a corrente segue.
+
+Não existe um comando único que instala as 13 de uma vez — elas vêm de fontes/marketplaces diferentes, então o `plugin.json` do `unblock` não pode declarar elas como dependência obrigatória com segurança (marketplace faltando quebraria a instalação pra todo mundo). Instala cada uma do jeito normal do seu setup, depois confere a cobertura (pergunta pro Claude: "quais das 13 ferramentas do unblock estão instaladas?").

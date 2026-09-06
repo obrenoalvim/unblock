@@ -26,7 +26,13 @@ Use it whenever a web search, scrape, or crawl fails, or whenever blocking looks
 12. **news-extractor**: extraction tuned for news and articles across 12 sites
 13. **Scrapling** (Python library, last resort): write and run a short stealth-fetch script
 
-Every tool in the list is free. No API key, no paid tier, no signup. A block or an empty result sends it to the next tool; it never retries the same one twice. When the chain finishes, it reports which tool worked, or that all 13 failed.
+Every tool in the list is free. No API key, no paid tier, no signup. A block or an empty result sends it to the next tool; it never retries the same one twice.
+
+**All 13 need to be installed for full coverage.** A tool that isn't installed gets skipped, not counted as a failure — the report always splits "tried" (installed, actually attempted) from "skipped" (not installed), so a machine with 3 of the 13 doesn't read as "13 tools failed."
+
+Some tools need setup beyond installing them. **agent-reach** is zero-config for 6 channels but needs a cookie/token for others (Twitter/X, 小红书) — run `agent-reach doctor --json` to check. Read each tool's own docs before assuming a failure is a real block.
+
+Before burning the chain, one cheap HTTP status + body-size check on a direct URL tells apart "blocked" from "genuinely empty page" — no point running 13 tools against a page that has nothing on it. The chain also remembers which tool won for a given domain (a small local scoreboard) and tries that one first next time, before falling back to the fixed order below.
 
 **Left out on purpose:** anything that needs an API key, a paid tier, or an account (firecrawl-scrape, x402-based tools, proxy-vendor skills). This chain stays free.
 
@@ -59,3 +65,5 @@ Copy `skills/web/SKILL.md` into your skills directory and invoke it through your
 ## Works with
 
 Any Claude Code session. Each tool in the chain (agent-reach, crawler, Scrapling, and the rest) needs its own install for that step to run. A tool that isn't installed gets skipped, and the chain moves on.
+
+There's no single command that installs all 13 at once — they live in different sources/marketplaces, so `unblock`'s own `plugin.json` can't safely declare them as hard dependencies (a missing marketplace would break install for everyone). Install each one the normal way for your setup, then check coverage with an install-status pass (ask Claude: "which of the 13 unblock tools are installed?").

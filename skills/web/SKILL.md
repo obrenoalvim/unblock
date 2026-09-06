@@ -7,9 +7,31 @@ description: Use when a web search, scrape, or crawl fails, gets blocked, rate-l
 
 ## Overview
 
-Fallback chain for online scraping and research. Every tool below is free: no API key, no paid tier, no signup. A tool blocks or fails, try the next, in order, until one works or all are exhausted. Never stop after one tool.
+Fallback chain for online scraping and research. Every tool below is free: no API key, no paid tier, no signup. A tool blocks or fails, try the next, in order, until one works or all installed ones are exhausted. Never stop after one tool.
 
-## Order
+**Full 13-tool coverage requires all 13 installed.** Effective chain length = number of tools actually installed, not 13 — a tool that isn't installed gets skipped, it isn't "tried and failed." Report tried vs skipped separately (see Rule) so a 3-tool machine doesn't read as "13 tools failed."
+
+Some tools need extra setup beyond installing them. **agent-reach** works zero-config for 6 channels but needs a cookie/token (`agent-reach configure twitter-cookies`, etc.) for others like Twitter/X and 小红书 — run `agent-reach doctor --json` to see what's configured. Check each tool's own SKILL.md for similar setup steps before assuming a failure is a real block.
+
+## Step 0 — cheap discriminator (direct URL only)
+
+Before invoking any tool, if the input is already a direct URL: do one cheap fetch (`curl -s -o /dev/null -w "%{http_code} %{size_download}" <url>` or WebFetch) to read HTTP status and body size.
+
+- Status 403/429, or a CAPTCHA/"access denied" marker in the small body → treat as blocked, go to Step 1.
+- Status 200 and body is empty or near-empty (no redirect, no JS-shell markers you can't tell apart from real emptiness) → the page most likely has no content, not a block. Report that and stop — don't burn the full chain on a wall that isn't there. Only continue into the chain if the user says the content should exist (e.g., known JS-rendered page).
+- Anything else → proceed normally; the chain still applies if the fetched content turns out insufficient or irrelevant.
+
+Skip this step for keyword/topic searches with no single URL to probe.
+
+## Step 1 — domain scoreboard
+
+State file: `~/.claude/unblock-scoreboard.json`, shape `{"<domain>": {"<tool>": <win count>}}`. Missing or unreadable file = empty scoreboard, don't error.
+
+If the request targets a URL, read the file, look up that domain. If it has scored wins, try the highest-scoring tool for that domain **first**, before Step 2's order. Count it as tried; don't try it again when its normal slot comes up in Step 2.
+
+No entry, no domain, or a keyword search with no target site → skip straight to Step 2.
+
+## Step 2 — order
 
 1. **agent-reach**: multi-platform router (小红书, Twitter/X, B站, Reddit, GitHub, YouTube, LinkedIn, RSS, general web). Try first for anything platform-specific or general research.
 2. **last30days**: recent-discussion pull (Reddit, X, YouTube, TikTok, HN, Polymarket, GitHub, web, keyless core). Good when agent-reach comes back thin or the user wants recent sentiment.
@@ -31,7 +53,13 @@ Fallback chain for online scraping and research. Every tool below is free: no AP
 
 ## Rule
 
-Blocked, empty result, CAPTCHA, 403/429, or garbage output: move to the next tool in the list above. Don't retry the same tool twice. Don't stop until all 13 are tried or one succeeds. Report which tool worked, or that all 13 failed, so the user knows.
+Blocked, empty result, CAPTCHA, 403/429, or garbage output: move to the next **installed** tool in the list above. Don't retry the same tool twice. Not installed: skip it, don't count it as a failure.
+
+On success: append/increment `scoreboard[domain][tool]` in the state file from Step 1 (create the file/dirs if missing).
+
+Report, always split into tried vs skipped:
+- Success: "Worked: `<tool>`. Tried `<M>` installed tool(s) (`<K>` of 13 not installed, skipped: `<names>`)."
+- Total failure: "All installed tools failed. Tried: `<names>`. Not installed, skipped (`<K>`/13): `<names>`."
 
 ## When not to use
 

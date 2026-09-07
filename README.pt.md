@@ -12,9 +12,9 @@ Use sempre que uma busca, scrape ou crawl falhar, ou de cara quando bloqueio par
 
 **Ordem, mais geral e robusta primeiro:**
 
-1. **agent-reach**: roteador multi-plataforma (小红书, X, B站, Reddit, GitHub, YouTube, LinkedIn, RSS, web geral)
-2. **last30days**: puxa discussão recente no Reddit, X, YouTube, TikTok, HN, GitHub
-3. **claude-in-chrome**: automação de browser real, pra site que exige login, interação ou renderização real
+1. **[agent-reach](https://buildwithclaude.com/skill/agent-reach)**: roteador multi-plataforma (小红书, X, B站, Reddit, GitHub, YouTube, LinkedIn, RSS, web geral)
+2. **[last30days](https://github.com/mvanhorn/last30days-skill)**: puxa discussão recente no Reddit, X, YouTube, TikTok, HN, GitHub
+3. **[claude-in-chrome](https://code.claude.com/docs/en/chrome)**: automação de browser real, pra site que exige login, interação ou renderização real
 4. **crawler**: Jina Reader, depois Scrapling stealth browser. Transforma URL em markdown limpo
 5. **web-scraping**: checa o site antes, escolhe interceptação de tráfego, sitemap, API ou DOM
 6. **web-scraping-automation**: Playwright/requests mais chamada REST e GraphQL genérica
@@ -24,7 +24,9 @@ Use sempre que uma busca, scrape ou crawl falhar, ou de cara quando bloqueio par
 10. **scraping-skills**: pacote de técnicas acadêmicas e éticas
 11. **scrapy-web-scraping**: framework Scrapy pra crawl grande multi-página
 12. **news-extractor**: extração ajustada pra notícia e artigo em 12 sites
-13. **Scrapling** (lib Python, último recurso): escreve e roda um script curto de stealth-fetch
+13. **[Scrapling](https://github.com/D4Vinci/Scrapling)** (lib Python, último recurso): escreve e roda um script curto de stealth-fetch
+
+Os itens 4–12 são nomes de skill genéricos da comunidade — várias implementações independentes usam o mesmo nome em marketplaces/registros diferentes (buildwithclaude.com, skills.rest, forks soltos no GitHub), então não tem uma fonte canônica única pra linkar com confiança. Procura o nome no seu marketplace de skills ou registro de plugin pra instalar uma.
 
 Toda ferramenta da lista é grátis. Sem API key, sem tier pago, sem cadastro. Bloqueio ou resultado vazio manda pra próxima ferramenta; nunca repete a mesma duas vezes.
 
@@ -58,7 +60,7 @@ Pule a corrente pra pergunta factual simples que uma busca web comum já respond
 Depois peça: "Usa a skill web pra achar X." Ela também dispara sozinha quando busca, scrape ou crawl trava.
 
 **Copiando o arquivo:**
-Copie `skills/web/SKILL.md` pro diretório de skills do seu sistema e invoque pelo seu próprio sistema.
+Copie [`skills/web/SKILL.md`](skills/web/SKILL.md) pro diretório de skills do seu sistema e invoque pelo seu próprio sistema.
 
 ---
 

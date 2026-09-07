@@ -12,9 +12,9 @@ Use it whenever a web search, scrape, or crawl fails, or whenever blocking looks
 
 **Order, most general and robust first:**
 
-1. **agent-reach**: multi-platform router (小红书, X, B站, Reddit, GitHub, YouTube, LinkedIn, RSS, general web)
-2. **last30days**: pulls recent discussion from Reddit, X, YouTube, TikTok, HN, GitHub
-3. **claude-in-chrome**: live browser automation for sites that need login, interaction, or real rendering
+1. **[agent-reach](https://buildwithclaude.com/skill/agent-reach)**: multi-platform router (小红书, X, B站, Reddit, GitHub, YouTube, LinkedIn, RSS, general web)
+2. **[last30days](https://github.com/mvanhorn/last30days-skill)**: pulls recent discussion from Reddit, X, YouTube, TikTok, HN, GitHub
+3. **[claude-in-chrome](https://code.claude.com/docs/en/chrome)**: live browser automation for sites that need login, interaction, or real rendering
 4. **crawler**: Jina Reader, then Scrapling stealth browser. Turns a URL into clean markdown
 5. **web-scraping**: checks the site first, then picks traffic interception, sitemap, API, or DOM scraping
 6. **web-scraping-automation**: Playwright/requests plus generic REST and GraphQL calls
@@ -24,7 +24,9 @@ Use it whenever a web search, scrape, or crawl fails, or whenever blocking looks
 10. **scraping-skills**: bundle of academic and ethical scraping techniques
 11. **scrapy-web-scraping**: Scrapy framework for large multi-page crawls
 12. **news-extractor**: extraction tuned for news and articles across 12 sites
-13. **Scrapling** (Python library, last resort): write and run a short stealth-fetch script
+13. **[Scrapling](https://github.com/D4Vinci/Scrapling)** (Python library, last resort): write and run a short stealth-fetch script
+
+Items 4–12 are generic community skill names — several independent implementations share each name across different marketplaces/registries (buildwithclaude.com, skills.rest, individual GitHub forks), so there's no single canonical source to link with confidence. Search your skill marketplace or plugin registry for the name to install one.
 
 Every tool in the list is free. No API key, no paid tier, no signup. A block or an empty result sends it to the next tool; it never retries the same one twice.
 
@@ -58,7 +60,7 @@ Skip the chain for a plain factual question that a normal web search already ans
 Then ask for it: "Use the web skill to find X." It also triggers on its own when a search, scrape, or crawl blocks.
 
 **Copy the file:**
-Copy `skills/web/SKILL.md` into your skills directory and invoke it through your own skill system.
+Copy [`skills/web/SKILL.md`](skills/web/SKILL.md) into your skills directory and invoke it through your own skill system.
 
 ---
 
